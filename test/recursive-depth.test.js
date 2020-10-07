@@ -24,7 +24,6 @@ describe('Recursive depth', () => {
         it.optional('returns correct depth of flat arrays', () => {
             for (let i = 1; i < 100; i++) {
                 const flatArr = createFlatArr(i);
-                console.log(flatArr);
                 assert.equal(calculateDepth(flatArr), 1);
             }
         });
