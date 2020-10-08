@@ -8,7 +8,7 @@ class VigenereCipheringMachine {
   encrypt(message, key) {
     if (message == undefined || key == undefined) throw new Error;
 
-
+    return [this._getOrdinalNumberLetters(message), this._getOrdinalNumberLetters(this. _getKeyEqString(message, key))];
   }
   decrypt() {
     throw new CustomError('Not implemented');
@@ -23,6 +23,43 @@ class VigenereCipheringMachine {
     }
 
     return obj;
+  }
+
+  _getKeyEqString(str, key) {
+    let newKey = '';
+
+    str = str.toLowerCase();
+    key = key.toLowerCase();
+
+    for (let i = 0, j = 0; i < str.length; i++, j++) {
+      if (str[i] == ' ' || str.charCodeAt(i) < 97 || str.charCodeAt(i) > 122) {
+        newKey = newKey + str[i];
+        j--;
+      } else {
+        newKey = newKey + key[j];
+      }
+      
+      if (j == key.length - 1) {
+        j = -1;
+      }
+
+    }
+
+    return newKey;
+  }
+
+  _getOrdinalNumberLetters(str) {
+    let instance = this.getLetters();
+    let result = [];
+
+    for (let i = 0; i < str.length; i++) {
+      if (str[i] == ' ' || str.charCodeAt(i) < 97 || str.charCodeAt(i) > 122) {
+        result.push(str[i]);
+      } else {
+        result.push(instance[str.charCodeAt(i)]);
+      }
+    }
+    return result;
   }
 }
 
