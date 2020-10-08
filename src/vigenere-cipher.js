@@ -14,6 +14,16 @@ class VigenereCipheringMachine {
     throw new CustomError('Not implemented');
     // remove line with error and write your code here
   }
+
+  getLetters() {
+    const obj = {};
+
+    for (let i = 97, j = 0; i < 123; i++, j++) {
+      obj[i] = j;
+    }
+
+    return obj;
+  }
 }
 
 module.exports = VigenereCipheringMachine;
