@@ -4,10 +4,7 @@ const MODERN_ACTIVITY = 15;
 const HALF_LIFE_PERIOD = 5730;
 
 module.exports = function dateSample(sampleActivity) {
-  let num = parseFloat(sampleActivity);
+  if (!/^\d+$/.test(sampleActivity) || sampleActivity == undefined || +sampleActivity <= 0 || +sampleActivity > MODERN_ACTIVITY || typeof (sampleActivity) != 'string') return false;
 
-  Math.floor(Math.log(15 / num) / (0.693 / 5730))
+  return (Math.log(15 / +sampleActivity) / (0.693 / HALF_LIFE_PERIOD)).toFixed(0);
 };
-
-// console.log(Math.ceil(Math.log(15 / 9.122605776326203) / (0.693 / 5730)));
-// console.log(Math.floor(Math.log(15 / 9.122605776326203) / (0.693 / 5730)));
