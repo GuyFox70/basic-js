@@ -11,11 +11,11 @@ class VigenereCipheringMachine {
     let result = [];
 
     let text = this._getOrdinalNumberLetters(message);
-    let textKey = this._getOrdinalNumberLetters(this. _getKeyEqString(message, key));
-    let objKeysForUnicodeToLetters = this.getObjOrdinalNumberKeys();
+    let textKey = this._getOrdinalNumberLetters(this._getKeyEqString(message, key));
+    let objKeysForUnicodeToLetters = this._getObjOrdinalNumberKeys();
 
     for (let i = 0; i < text.length; i++) {
-      if (typeof(text[i]) == 'number') {
+      if (typeof (text[i]) == 'number') {
         let total = text[i] + textKey[i];
 
         if (total >= 26) {
@@ -28,15 +28,36 @@ class VigenereCipheringMachine {
       }
     }
 
-    return result.join('').toUpperCase();
+    return this.dir === false ? result.reverse().join('').toUpperCase() : result.join('').toUpperCase();
   }
 
-  decrypt() {
-    throw new CustomError('Not implemented');
-    // remove line with error and write your code here
+  decrypt(message, key) {
+    if (message == undefined || key == undefined) throw new Error;
+
+    let result = [];
+
+    let text = this._getOrdinalNumberLetters(message);
+    let textKey = this._getOrdinalNumberLetters(this._getKeyEqString(message, key));
+    let objKeysForUnicodeToLetters = this._getObjOrdinalNumberKeys();
+
+    for (let i = 0; i < text.length; i++) {
+      if (typeof (text[i]) == 'number') {
+        let total = text[i] - textKey[i];
+
+        if (total < 0) {
+          total = (26 + text[i]) - textKey[i];
+        }
+
+        result.push(String.fromCodePoint(objKeysForUnicodeToLetters[total]));
+      } else {
+        result.push(text[i]);
+      }
+    }
+
+    return this.dir === false ? result.reverse().join('').toUpperCase() : result.join('').toUpperCase();
   }
 
-  getObjUnicodeKeys() {
+  _getObjUnicodeKeys() {
     const obj = {};
 
     for (let i = 97, j = 0; i < 123; i++, j++) {
@@ -46,7 +67,7 @@ class VigenereCipheringMachine {
     return obj;
   }
 
-  getObjOrdinalNumberKeys() {
+  _getObjOrdinalNumberKeys() {
     const obj = {};
 
     for (let i = 97, j = 0; i < 123; i++, j++) {
@@ -69,7 +90,7 @@ class VigenereCipheringMachine {
       } else {
         newKey = newKey + key[j];
       }
-      
+
       if (j == key.length - 1) {
         j = -1;
       }
@@ -80,8 +101,10 @@ class VigenereCipheringMachine {
   }
 
   _getOrdinalNumberLetters(str) {
-    let instance = this.getObjUnicodeKeys();
+    let instance = this._getObjUnicodeKeys();
     let result = [];
+
+    str = str.toLowerCase();
 
     for (let i = 0; i < str.length; i++) {
       if (str[i] == ' ' || str.charCodeAt(i) < 97 || str.charCodeAt(i) > 122) {
